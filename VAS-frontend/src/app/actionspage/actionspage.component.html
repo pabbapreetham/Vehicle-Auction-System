@@ -1,0 +1,410 @@
+<!-- Action Buttons which has main Functionality routing -->
+<div class = "button-container">
+<button class = "header-button" (click) = "createCompanyClick()"><h3>Create Company</h3></button>
+
+<button class = "header-button" (click) = "viewCompanyClick()"><h3>View Companies</h3></button>
+
+<button class = "header-button" (click) = "createSubTeamClick()"><h3>Create Sub Team</h3></button>
+
+<button class = "header-button" (click) = "createSellerClick()"><h3>Create Seller</h3></button>
+
+<button class = "header-button" (click) = "updateSellerStatusClick()"><h3>Change Seller Status</h3></button> 
+
+<button class = "header-button" (click) = "createUserClick()"><h3>Create User</h3></button>
+
+<button class = "header-button" (click) = "userLoginClick()"><h3>User Login</h3></button>
+
+</div>
+
+<body>
+
+<!-- Displays Company creation form -->
+<div align = "center"><div  *ngIf= "isCompanyCreationPage" class = "formContainer">
+    <form [formGroup]="addCompanyForm">
+        <div ><h2>ADD COMPANY DETAILS</h2></div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">CompanyName :</label>
+            <input type="text" formControlName="companyName" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Country :</label>
+            <input type="text" formControlName="country" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Address line1 :</label>
+            <input type="text" formControlName="line1" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Address line2 :</label>
+            <input type="text" formControlName="line2" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">City :</label>
+            <input type="text" formControlName="city" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">State :</label>
+            <input type="text" formControlName="state" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">ZipCode :</label>
+            <input type="text" formControlName="zipCode" class="form-control">
+        </div>
+
+        <button class = "button" (click) = "AddSellerCompany()"> Add</button>
+        <p class = "errorField" *ngIf = "!this.addCompanyForm.valid && showError">Please Enter all Valid Details</p>
+    </form>
+
+        <p class = "errorField" *ngIf = "showErrorForCompanyAdd" > Failed to Create Company</p>
+        <p class = "successField" *ngIf = "showSuccessForCompanyAdd"> Company Added Successfully</p> 
+
+    </div>
+    
+</div>
+
+ <!-- Displays list of all company details -->
+<div align = "center">
+    <div  *ngIf= "isViewCompanyPage" class = "formContainertable">
+        <div *ngIf="this.companyDTOList.length > 0" class = "tableContainer">
+            <div class = "tableHead">
+            <p >COMPANY DETAILS</p></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th> Company Name</th>
+                        <th> Country</th>
+                        <th> Address line1</th>
+                        <th> Address line2 </th>
+                        <th> City</th>
+                        <th> State</th>
+                        <th> ZipCode</th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of companyDTOList">
+                        <td> {{data.companyName}}</td>
+                        <td> {{data.country}}</td>
+                        <td> {{data.line1}}</td>
+                        <td> {{data.line2}}</td>
+                        <td> {{data.city}}</td>
+                        <td> {{data.state}}</td>
+                        <td> {{data.zipCode}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+ <!-- Displays Sub Team creation form -->
+<div align = "center"><div *ngIf= "isSubTeamCreationPage" class = "formContainer">
+    <form [formGroup]="addSubTeamForm">
+        <div ><h2>ADD SUB TEAM DETAILS</h2></div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">SubTeamName :</label>
+            <input type="text" formControlName="subTeamName" class="form-control">
+        </div>
+
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Select Company :</label>
+            <!-- <p-dropdown [options]="companiesDropDown" formControlName="companyId" optionLabel="label" optionValue="value"
+                        placeholder="Select Company">
+            </p-dropdown> -->
+
+            <select formControlName="companyId" id="companyId" >
+                <option value="" disabled selected>Select the company</option>
+                <option *ngFor="let category of companiesDropDown" [ngValue]="category.value">
+
+                    {{category.label}}
+
+                </option>
+            </select>
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Country :</label>
+            <input type="text" formControlName="country" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Address line1 :</label>
+            <input type="text" formControlName="line1" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Address line2 :</label>
+            <input type="text" formControlName="line2" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">City :</label>
+            <input type="text" formControlName="city" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">State :</label>
+            <input type="text" formControlName="state" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">ZipCode :</label>
+            <input type="text" formControlName="zipCode" class="form-control">
+        </div>
+
+        <button class = "button" (click) = "AddSubTeam()"> Add</button>
+        <p class = "errorField" *ngIf = "!this.addSubTeamForm.valid && showError">Please Enter all Valid Details</p>
+    </form>
+
+        <p class = "errorField" *ngIf = "showErrorForSubTeamAdd" > Failed to Create Sub Team</p>
+        <p class = "successField" *ngIf = "showSuccessForSubTeamAdd"> Sub Team Added Successfully</p>
+
+    </div>
+</div>
+
+ <!-- Displays Seller creation form -->
+<div align = "center"><div *ngIf= "isSellerCreationPage" class = "formContainer">
+    <form [formGroup]="addSellerForm">
+        <div ><h2>ADD SELLER DETAILS</h2></div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Seller Name :</label>
+            <input type="text" formControlName="sellerName" class="form-control">
+        </div>
+        
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Company :</label>
+            <!-- <p-dropdown [options]="companiesDropDown" formControlName="companyId"
+                        (onChange) = "onSelectCompany()"
+                        placeholder="Select Company">
+            </p-dropdown> -->
+
+            <select formControlName="companyId" id="companyId" (ngModelChange)="onSelectCompany()">
+                <option value="" disabled selected>Select the company</option>
+                <option *ngFor="let category of companiesDropDown" [ngValue]="category.value" >
+
+                    {{category.label}}
+
+                </option>
+            </select>
+        </div>
+
+        <div class = "elementContainer">
+            <label class = "textfieldcl">SubTeams :</label>
+
+            <p-multiSelect class = "p-multiSelect" defaultLabel="Select Sub Teams" formControlName="subTeams" [options]="subTeamsDropDown" 
+             [(ngModel)]="selectedSubTeams" ></p-multiSelect>
+
+             <!-- [ngModelOptions]="{standalone: true}" -->
+             <!-- <ng-multiselect-dropdown
+             [placeholder]="'Select subTeams'"
+             [settings]="dropdownSettings"
+             formControlName="subTeams"
+             [data]="subTeamsDropDown"
+             [(ngModel)]="selectedMultiSubTeams"
+           >
+           </ng-multiselect-dropdown> -->
+
+        </div>
+
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Email :</label>
+            <input type="text" formControlName="email" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Phone number :</label>
+            <input type="text" formControlName="phone" class="form-control" maxlength="10">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Extension :</label>
+            <input type="text" formControlName="ext" class="form-control" maxlength="6">
+        </div>
+
+        <button class = "button" (click) = "AddSeller()"> Add</button>
+        <p class = "errorField" *ngIf = "!this.addSellerForm.valid && showError">Please Enter all Valid Details</p>
+    </form>
+
+        <p class = "errorField" *ngIf = "showErrorForSellerAdd" > Failed to Create Seller</p>
+        <p class = "successField" *ngIf = "showSuccessForSellerAdd"> Seller Added Successfully</p>
+
+</div></div>
+
+<!-- Displays Update Seller Status form -->
+<div align = "center"><div *ngIf = "isUpdateSellerStatusPage" class="formContainer">
+    <form [formGroup]="changeSellerStatusForm">
+        <div ><h2>UPDATE SELLER STATUS</h2></div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Seller :</label>
+            <!-- <p-dropdown [options]="sellerDropDown" formControlName="sellerId"
+                        placeholder="Select Seller">
+            </p-dropdown> -->
+
+            <select formControlName="sellerId" id="sellerId" >
+                <option value="" disabled selected>Select Seller</option>
+                <option *ngFor="let category of sellerDropDown" [ngValue]="category.value" >
+                    {{category.label}}
+                </option>
+            </select>
+        </div>
+
+        <button class = "button" (click) = "UpdateSellerStatus()">Activate/Inactivate</button>
+        <p class = "errorField" *ngIf = "!this.changeSellerStatusForm.valid && showError">Please Select a Seller</p>
+        <p class = "errorField" *ngIf = "this.updateSellerStatusError">Error while updating the Seller Status</p>
+        <p class = "successField" *ngIf = "this.updateSellerStatusSuccess"> Seller Status Updated Successfully</p>
+    </form>
+</div></div>
+
+<!-- Displays User Creation form -->
+<div align = "center"><div *ngIf= "isUserCreationPage" class = "formContainer">
+    <form [formGroup]="addUserForm">
+        <div ><h2>ADD USER DETAILS</h2></div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Seller :</label>
+            <!-- <p-dropdown [options]="sellerDropDown" formControlName="sellerId"
+                        placeholder="Select Seller">
+            </p-dropdown> -->
+            <select formControlName="sellerId" id="sellerId" >
+                <option value="" disabled selected>Select Seller</option>
+                <option *ngFor="let category of sellerDropDown" [ngValue]="category.value" >
+                    {{category.label}}
+                </option>
+            </select>
+            
+        </div>
+
+        <div class = "elementContainer">
+            <label class = "textfieldcl">User Name :</label>
+            <input type="text" formControlName="userName" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Password :</label>
+            <input type="text" formControlName="password" class="form-control">
+        </div>
+        
+        <button class = "button" (click) = "AddUser()"> Add</button>
+        <p class = "errorField" *ngIf = "!this.addUserForm.valid && showError">Please Enter Details</p>
+    </form>
+
+        <p class = "errorField" *ngIf = "showErrorForUserAdd" > Failed to Create User</p>
+        <p class = "successField" *ngIf = "showSuccessForUserAdd"> User Added Successfully</p>
+
+    </div>
+</div>
+
+<!-- Displays Login Page form -->
+<div align = "center"><div *ngIf = "isLoginPage && !loginsuccessful" class = "formContainer">
+    <form [formGroup]="loginForm">
+        <div ><h2>LOGIN PAGE</h2></div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">User Name :</label>
+            <input type="text" formControlName="userName" class="form-control">
+        </div>
+        <div class = "elementContainer">
+            <label class = "textfieldcl">Password :</label>
+            <input type="password" formControlName="password" class="form-control">
+        </div>
+
+        <button class = "button" (click) = "login()"> Login</button>
+        <p class = "errorField" *ngIf = "!this.loginForm.valid && showError">Please Enter Valid Credentials</p>
+        <p class = "errorField" *ngIf = "showLoginError">Please Enter Valid Credentials</p>
+    </form>
+</div></div>
+
+<!-- Displays Vehicle page form if login successful -->
+<div *ngIf = "isLoginPage && loginsuccessful" >
+    <button class = "addVehicle" (click) = "openvehicleForm()"> Add Vehicle</button>
+
+    <!-- Displays Vehicle creation form -->
+    <div align = "center"><div *ngIf = "createVehicle" class = "formContainer">
+        <form [formGroup]="vehicleForm">
+            <div ><h2>ADD VEHICLE DETAILS</h2></div>
+            <div class = "elementContainer">
+                <label class = "textfieldcl">VIN :</label>
+                <input type="text" formControlName="vin" class="form-control">
+            </div>
+            <div class = "elementContainer">
+                <label class = "textfieldcl">Model Name :</label>
+                <input type="text" formControlName="modelName" class="form-control">
+            </div>
+            <div class = "elementContainer">
+                <label class = "textfieldcl">Vehicle Company :</label>
+                <input type="text" formControlName="vehicleCompany" class="form-control">
+            </div>
+            <div class = "elementContainer">
+                <label class = "textfieldcl">Participate in Auction? </label>
+                <label><input type="radio" formControlName="isAuction" (ngModelChange)="onSelectAuctionOrDirect()" value="Yes">Yes</label>
+                <label><input type="radio" formControlName="isAuction"  (ngModelChange)="onSelectAuctionOrDirect()" value="No">No</label>
+            </div>
+
+            <div *ngIf = "showAuctionFields" class = "elementContainer">
+                <label class = "textfieldcl"> Auction Date :</label>
+                <input type="text" formControlName="auctionDate" class="form-control">
+            </div>
+            <div *ngIf = "showAuctionFields" class = "elementContainer">
+                <label class = "textfieldcl"> Base Price :</label>
+                <input type="text" formControlName="basePrice" class="form-control">
+            </div>
+            <div *ngIf = "!showAuctionFields" class = "elementContainer">
+                <label class = "textfieldcl"> Price :</label>
+                <input type="text" formControlName="price" class="form-control">
+            </div>
+
+            <button class = "button" (click) = "addVehicleData()"> Submit</button>
+            <button class = "button" (click) = "closeAddVehicleForm()"> Cancel</button>
+
+            <p class = "errorField" *ngIf = "!this.vehicleForm.valid && showError">Please Enter all Valid Details</p>
+
+        </form>
+    </div>
+        <p class = "errorField" *ngIf = "showFailureMessage" > Failed to add Vehicle</p>
+        <p class = "successField" *ngIf = "showSuccessMessage"> Vehicle Added Successfully</p>
+    </div>
+
+    <!-- Displays Auction vehicles -->
+    <div *ngIf="this.currentUserAuctionVehicles.length > 0" class = "tableContainer">
+        <div class = "tableHead">
+        <p >AUCTION VEHICLES</p></div>
+        <table>
+            <thead>
+                <tr>
+                    <th> VIN</th>
+                    <th> Model Name</th>
+                    <th> VehicleCompany</th>
+                    <th>Auction Date</th>
+                    <th> Base Price</th>
+                    <th> Auction Status</th>  
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of currentUserAuctionVehicles">
+                    <td> {{data.vin}}</td>
+                    <td> {{data.modelName}}</td>
+                    <td> {{data.vehicleCompany}}</td>
+                    <td> {{data.auctionDate}}</td>
+                    <td> {{data.basePrice}}</td>
+                    <td> {{data.auctionStatus ? 'In Auction' : 'Auction Done'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Displays Direct Buy Vehicles -->
+    <div *ngIf="this.currentUserDirectVehicles.length > 0" class = "tableContainer">
+        <div class = "tableHead"> <p>DIRECT BUY VEHICLES</p></div>
+        <table>
+            <thead>
+                <tr>
+                    <th> VIN</th>
+                    <th> Model Name</th>
+                    <th> VehicleCompany</th>
+                    <th> Price</th>
+                    <th> Vehicle Status</th>  
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of currentUserDirectVehicles">
+                    <td> {{data.vin}}</td>
+                    <td> {{data.modelName}}</td>
+                    <td> {{data.vehicleCompany}}</td>
+                    <td> {{data.price}}</td>
+                    <td> {{data.vehicleStatus ? 'Available' : 'Sold'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
